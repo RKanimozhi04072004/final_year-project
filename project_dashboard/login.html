@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Login</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #6e7a9c, #3f4d6c);
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 380px;
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+
+        label {
+            font-size: 14px;
+            color: #555;
+            text-align: left;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0 15px 0;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            background-color: #f9f9f9;
+            font-size: 16px;
+            transition: 0.3s ease-in-out;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #5c6bc0;
+            background-color: #fff;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #5c6bc0;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: 0.3s ease-in-out;
+        }
+
+        button:hover {
+            background-color: #3f4d6c;
+        }
+
+        .file-input-container {
+            margin-bottom: 20px;
+        }
+
+        .file-input-container input {
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 14px;
+            background-color: #f9f9f9;
+        }
+
+        .file-input-container p {
+            color: #333;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+
+        #error-msg {
+            color: red;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+
+        .footer {
+            margin-top: 30px;
+            font-size: 12px;
+            color: #777;
+        }
+
+        .footer a {
+            text-decoration: none;
+            color: #5c6bc0;
+        }
+
+       
+        .background {
+            background-image: url("https://plus.unsplash.com/premium_photo-1661456342021-faa4a2ac84f1?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8ZWR1Y2F0aW9uJTIwYmFja2dyb3VuZHxlbnwwfHwwfHx8MA%3D%3D");
+            background-size: cover;
+            background-position: center;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: -1;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="background"></div>
+
+    <div class="container">
+      
+
+        <h2>Student Login</h2>
+        <form id="loginForm">
+            <label for="name">Name:</label>
+            <input type="text" id="name" required>
+
+            <label for="studentId">Student ID:</label>
+            <input type="text" id="studentId" required>
+
+            <button type="submit">Login</button>
+            <p id="error-msg"></p>
+        </form>
+
+        <div class="footer">
+            <p>New user? <a href="#">Sign up</a></p>
+        </div>
+    </div>
+
+    <script>
+        let students = [];
+
+        function fetchData() {
+            fetch('db_api.php') 
+                .then(response => response.json()) 
+                .then(data => {
+                    console.log(data); 
+
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                });
+        }
+       
+        document.getElementById("loginForm").addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            const name = document.getElementById("name").value.trim();
+            const studentId = document.getElementById("studentId").value.trim();
+            const errorMsg = document.getElementById("error-msg");
+            fetch('db_api.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: `name=${encodeURIComponent(name)}&id=${encodeURIComponent(studentId)}`
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data); 
+                    if (data.name) {
+                        localStorage.setItem("studentName", data.name);
+                        localStorage.setItem("studentId", data.studentid);
+                        localStorage.setItem("studentData", JSON.stringify(data));
+
+                        alert("Login successful!");
+                        window.location.href = "student.html"; 
+                    } else {
+                        errorMsg.textContent = "Invalid Name or Student ID!";
+                    }
+                   
+
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                });
+
+
+
+        });
+
+        function parseCSV(csvText) {
+            const lines = csvText.trim().split("\n");
+            const headers = lines[0].split(",");
+            return lines.slice(1).map(line => {
+                const values = line.split(",");
+                let entry = {};
+                headers.forEach((header, index) => {
+                    entry[header.trim()] = values[index] ? values[index].trim() : "";
+                });
+                return entry;
+            });
+        }
+    </script>
+</body>
+
+</html>

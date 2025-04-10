@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+</head>
+<body>
+    <section id="file-upload-section">
+        <h2>Upload Dataset</h2>
+        <input type="file" id="file-input" accept=".csv">
+    </section>
+
+    <section id="attendance-table-section" style="margin-top:20px;">
+        <h2>Attendance Table</h2>
+        <table id="attendance-table" border="1" style="width:100%; border-collapse: collapse; text-align:center;">
+            <thead>
+                <tr>
+                    <th>Student Name</th>
+                    <th>Student ID</th>
+                    <th>Attendance</th>
+                </tr>
+            </thead>
+            <tbody>
+               
+            </tbody>
+        </table>
+    </section>
+
+    <script>
+      
+        let students = [];
+
+       
+        function updateAttendanceTable() {
+            const tableBody = document.getElementById('attendance-table').getElementsByTagName('tbody')[0];
+            tableBody.innerHTML = ''; 
+
+            students.forEach(student => {
+               
+                const row = tableBody.insertRow();
+
+               
+                const nameCell = row.insertCell(0);
+                const idCell = row.insertCell(1);
+                const attendanceCell = row.insertCell(2);
+
+                nameCell.textContent = student.fullName;
+                idCell.textContent = student.studentID;
+                attendanceCell.textContent = student.attendance; 
+            });
+        }
+
+      
+        document.getElementById('file-input').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file && file.name.endsWith('.csv')) {
+                Papa.parse(file, {
+                    complete: function(result) {
+                        students = result.data.slice(1).map(row => ({
+                            studentID: row[0],
+                            fullName: row[1],
+                            gender: row[2],
+                            nationality: row[3],
+                            email: row[4],
+                            phoneNumber: row[5],
+                            address: row[6],
+                            parentName: row[7],
+                            parentEmail: row[8],
+                            enrollmentYear: row[9],
+                            graduationYear: row[10],
+                            totalMarks: row[11],
+                            gpa: row[12],
+                            feeBalance: row[13],
+                            networksMarks: row[14],
+                            operatingSystemMarks: row[15],
+                            javaMarks: row[16],
+                            dataStructuresMarks: row[17],
+                            databaseMarks: row[18],
+                            networksGrade: row[19],
+                            operatingSystemGrade: row[20],
+                            javaGrade: row[21],
+                            dataStructuresGrade: row[22],
+                            databaseGrade: row[23],
+                            totalGrade: row[24],
+                            attendance: row[25],
+                        }));
+                        updateAttendanceTable(); 
+                    },
+                    header: false
+                });
+            } else {
+                alert('Please upload a valid CSV file.');
+            }
+        });
+    </script>
+</body>
+</html>

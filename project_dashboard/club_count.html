@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Club Participation Statistics</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: #f4f4f4;
+        }
+        .container {
+            width: 60%;
+            margin: 50px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        .club-container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        .club-button {
+            width: 200px;
+            height: 80px;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            border-radius: 10px;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.3s;
+        }
+        .club-button:hover {
+            transform: scale(1.1);
+        }
+        #clubChart {
+            max-width: 100%;
+            height: 300px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Student Participation in Clubs</h2>
+        <div class="club-container" id="clubButtons"></div>
+        <canvas id="clubChart"></canvas>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            fetch("db1.php")
+                .then(response => response.json())
+                .then(data => {
+                    let clubButtons = document.getElementById("clubButtons");
+
+                    let clubs = {
+                        "Chess Club": { count: data.chess || 0, color: "#ff5733" },
+                        "Science Club": { count: data.science || 0, color: "#36a2eb" },
+                        "Student Club": { count: data.student || 0, color: "#ffce56" },
+                        "NCC Club": { count: data.ncc || 0, color: "#4bc0c0" }
+                    };
+
+                    Object.keys(clubs).forEach(club => {
+                        let button = document.createElement("button");
+                        button.className = "club-button";
+                        button.style.backgroundColor = clubs[club].color;
+                        button.innerHTML = `${club}<br>${clubs[club].count} Students`;
+                        clubButtons.appendChild(button);
+                    });
+
+                    // Chart.js - Visualize Club Participation
+                    let ctx = document.getElementById("clubChart").getContext("2d");
+                    new Chart(ctx, {
+                        type: "bar",
+                        data: {
+                            labels: Object.keys(clubs),
+                            datasets: [{
+                                label: "No. of Students",
+                                data: Object.values(clubs).map(c => c.count),
+                                backgroundColor: Object.values(clubs).map(c => c.color)
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            scales: {
+                                y: { beginAtZero: true }
+                            }
+                        }
+                    });
+                })
+                .catch(error => console.error("Error fetching data:", error));
+        });
+    </script>
+</body>
+</html>

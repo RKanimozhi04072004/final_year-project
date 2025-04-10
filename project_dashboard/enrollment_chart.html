@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Colorful Enrollment Year Line Chart</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 30px;
+            background: #f5f7fa;
+        }
+
+        canvas {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <h2>🎓 Enrollment Year Line Chart</h2>
+    <canvas id="enrollmentChart" width="700" height="400"></canvas>
+
+    <script>
+        fetch('enrollment_data.php')
+            .then(response => response.json())
+            .then(data => {
+                const labels = data.map(item => item.enrollment);
+                const counts = data.map(item => item.count);
+
+                const ctx = document.getElementById('enrollmentChart').getContext('2d');
+
+                // Create gradient
+                const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+                gradient.addColorStop(0, 'rgba(54, 162, 235, 0.6)');
+                gradient.addColorStop(1, 'rgba(255, 206, 86, 0.1)');
+
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Students Enrolled',
+                            data: counts,
+                            fill: true,
+                            backgroundColor: gradient,
+                            borderColor: 'rgba(255, 99, 132, 1)',
+                            borderWidth: 3,
+                            pointBackgroundColor: 'rgba(75, 192, 192, 1)',
+                            pointBorderColor: '#fff',
+                            pointHoverRadius: 7,
+                            tension: 0.4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                display: true,
+                                labels: {
+                                    color: '#444',
+                                    font: {
+                                        size: 14
+                                    }
+                                }
+                            },
+                            tooltip: {
+                                backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                                titleColor: '#fff',
+                                bodyColor: '#fff'
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    color: '#555'
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'Number of Students',
+                                    color: '#888'
+                                }
+                            },
+                            x: {
+                                ticks: {
+                                    color: '#555'
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'Enrollment Year',
+                                    color: '#888'
+                                }
+                            }
+                        }
+                    }
+                });
+            });
+    </script>
+</body>
+</html>

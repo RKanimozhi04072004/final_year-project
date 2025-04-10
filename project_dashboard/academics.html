@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Academics</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+      
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(-45deg, #3f4d6c, #6e7a9c, #556080, #8c92ac);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            padding: 20px;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+      
+        .container {
+            background-color: #fff;
+            width: 100%;
+            max-width: 500px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            padding: 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        .container:hover {
+            transform: scale(1.02);
+            transition: transform 0.3s ease;
+        }
+
+       
+        h2 {
+            font-size: 28px;
+            color: #333;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+
+     
+        #student-info {
+            font-size: 16px;
+            color: #444;
+            margin-bottom: 20px;
+        }
+
+      
+        select {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            font-size: 16px;
+            background-color: #f9f9f9;
+            margin-bottom: 20px;
+        }
+
+        select:focus {
+            border-color: #5c6bc0;
+            outline: none;
+        }
+
+       
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            padding: 12px;
+        }
+
+        th {
+            background-color: #5c6bc0;
+            color: white;
+        }
+
+        td {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+       
+        .footer {
+            margin-top: 30px;
+            font-size: 14px;
+            color: #777;
+        }
+
+        .footer a {
+            text-decoration: none;
+            color: #5c6bc0;
+        }
+
+      
+        .go-back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: #5c6bc0;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .go-back-btn:hover {
+            background-color: #3e4aa0;
+        }
+
+      
+        @media (max-width: 600px) {
+            .container {
+                width: 90%;
+                padding: 20px;
+            }
+
+            .go-back-btn {
+                top: 10px;
+                left: 10px;
+                padding: 8px 12px;
+            }
+        }
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: url('https://static.vecteezy.com/system/resources/previews/002/791/593/non_2x/class-of-2019-graduarion-design-elements-empty-frame-with-education-background-illustration-free-vector.jpg') no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            padding: 20px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <button class="go-back-btn" onclick="window.location.href='student.html';">
+            <i class="fas fa-arrow-left"></i> Back
+        </button>
+        <h2>Student Academic Details</h2>
+        <p id="student-info"></p>
+
+        <label for="semesterSelect">Select Semester:</label>
+        <select id="semesterSelect">
+            <option value="" disabled selected>Select a semester</option>
+            <option value="Winter 2025">Winter 2025</option>
+            <option value="Fall 2024">Fall 2024</option>
+            <option value="Winter 2024">Winter 2024</option>
+            <option value="Fall 2023">Fall 2023</option>
+            <option value="Winter 2023">Winter 2023</option>
+            <option value="Fall 2022">Fall 2022</option>
+            <option value="Winter 2022">Winter 2022</option>
+            <option value="Fall 2021">Fall 2021</option>
+        </select>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Subject</th>
+                    <th>Marks</th>
+                </tr>
+            </thead>
+            <tbody id="marksTable">
+            </tbody>
+        </table>
+
+        <div class="footer">
+            <p>Need help? <a href="#">Contact Support</a></p>
+        </div>
+    </div>
+
+    <script>
+       
+        const studentName = localStorage.getItem("studentName");
+        const studentId = localStorage.getItem("studentId");
+
+        if (!studentName || !studentId) {
+            alert("No student data found. Please log in first.");
+            window.location.href = "student.html";
+        } else {
+            document.getElementById("student-info").textContent = `Student: ${studentName} (ID: ${studentId})`;
+        }
+
+        const studentMarks = {
+            "Winter 2025": {
+                "Cloud Computing": 88,
+                "Information Security Management":70,
+                "Web Technologies":89,
+                "Physics":90,
+                "Basic Electronics":92
+            },
+            "Fall 2024": {
+                "Soft Computing": 82,
+                "Cyber Security": 87,
+                "Artificial Intelligence":77,
+                "Python":98,
+                "Calculus":79
+            },
+            "Winter 2024": {
+                "Distributed Computing": 80,
+                "Machine Learning": 83,
+                "Big Data Analytics": 75,
+                "Advanced Competitive Coding II": 78,
+                "Embedded Systems and IoT":94
+            },
+            "Fall 2023": {
+                "Information Security Audit": 90,
+                "Operating Systems": 85,
+                "Computer Networks": 70,
+                "Theory of Computation": 65,
+                "Embedded Systems and IoT": 88
+            },
+            "Winter 2023": {
+                "Java": 60,
+                "French": 63,
+                "Computer Architecture": 95,
+                "Data Structures": 43,
+                "Database Systems": 89
+            },
+            "Fall 2022": {
+                "Software Engineering": 95,
+                "Probability and Statistics": 85,
+                "Quantitative Skills Practice II": 70,
+                "Data Structures": 65,
+                "Quantitative Skills Practice I":77
+            },
+            "Winter 2022": {
+                "Chemistry": 74,
+                "Principles of Communication": 83,
+                "Linear Algebra": 90,
+                "Discrete Mathematics": 67,
+                "Marketing Management": 90
+            },
+            "Fall 2021": {
+                "OOPs": 70,
+                "Basic Electrical": 55,
+                "Digital Logic": 90,
+                "Differential Equations": 95,
+                "Soft Skills": 41
+            }
+        };
+
+        function displayStudentMarks(semester) {
+            const marksTable = document.getElementById("marksTable");
+            marksTable.innerHTML = "";
+
+            if (studentMarks[semester]) {
+                Object.entries(studentMarks[semester]).forEach(([subject, marks]) => {
+                    const row = document.createElement("tr");
+                    row.innerHTML = `<td>${subject}</td><td>${marks}</td>`;
+                    marksTable.appendChild(row);
+                });
+            } else {
+                marksTable.innerHTML = `<tr><td colspan="2">No data available for this semester.</td></tr>`;
+            }
+        }
+
+        document.getElementById("semesterSelect").addEventListener("change", function() {
+            displayStudentMarks(this.value);
+        });
+    </script>
+</body>
+</html>

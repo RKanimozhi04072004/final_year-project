@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Performance Prediction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f9;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+        }
+        label, input {
+            width: 100%;
+            padding: 8px;
+            margin: 8px 0;
+        }
+        button {
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .result {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Predict Student Performance</h1>
+        <form id="predictionForm">
+            <label for="attendance">Attendance Percentage:</label>
+            <input type="number" id="attendance" required min="0" max="100">
+
+            <label for="studyHours">Study Hours per Week:</label>
+            <input type="number" id="studyHours" required min="0">
+
+            <label for="previousGrade">Previous Grade (out of 100):</label>
+            <input type="number" id="previousGrade" required min="0" max="100">
+
+            <button type="submit">Predict Performance</button>
+        </form>
+
+        <div id="predictionResult" class="result"></div>
+    </div>
+
+    <script>
+       
+        document.getElementById("predictionForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            
+            const attendance = document.getElementById("attendance").value;
+            const studyHours = document.getElementById("studyHours").value;
+            const previousGrade = document.getElementById("previousGrade").value;
+
+            
+            fetch('http://127.0.0.1:5000/predict', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    attendance: attendance,
+                    studyHours: studyHours,
+                    previousGrade: previousGrade
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                
+                const resultDiv = document.getElementById("predictionResult");
+                resultDiv.innerHTML = `Predicted Performance: ${data.prediction}`;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+    </script>
+</body>
+</html>

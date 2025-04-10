@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parent Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #FF8C00, #FF6347);
+            color: #333;
+            padding: 40px;
+        }
+
+        .container {
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            font-size: 2rem;
+            color: #2980b9;
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 1rem;
+            color: #7f8c8d;
+            margin: 10px 0;
+        }
+
+        .card {
+            background: #f4f4f9;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .card h3 {
+            font-size: 1.5rem;
+            color: #3498db;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .card p {
+            font-size: 1.1rem;
+            color: #34495e;
+            margin-bottom: 10px;
+        }
+
+        .button {
+            background-color: #3498db;
+            color: #fff;
+            padding: 15px 25px;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 20px;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        .button:hover {
+            background-color: #2980b9;
+        }
+
+        .footer {
+            font-size: 1rem;
+            color: #7f8c8d;
+            margin-top: 30px;
+        }
+
+        .footer a {
+            text-decoration: none;
+            color: #3498db;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .card {
+                padding: 15px;
+            }
+
+            .button {
+                padding: 12px 20px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>Welcome, Parent</h1>
+        <h2>Student Profile</h2>
+
+        <div class="card">
+            <h3>Student Information</h3>
+            <p><strong>Student Name:</strong> <span id="studentName">Carol Liu</span></p>
+            <p><strong>Student ID:</strong> <span id="studentId">10001</span></p>
+            <p><strong>CGPA:</strong> <span id="cgpa">3.45</span></p>
+            <p><strong>Fee Balance:</strong> <span id="feeBalance">₹15,968</span></p>
+
+        </div>
+
+        <div class="card">
+            <h3>Academic Performance</h3>
+            <p><strong>Networks Marks:</strong> <span id="n_mark">85</span></p>
+            <p><strong>Operating System Marks:</strong> <span id="os_mark">85</span></p>
+            <p><strong>Java Marks:</strong> <span id="java_mark">85</span></p>
+            <p><strong>Data Structures Marks:</strong> <span id="dsa_mark">85</span></p>
+            <p><strong>Database Marks:</strong> <span id="db_mark">85</span></p>
+        </div>
+
+        <div class="card">
+            <h3>Attendance</h3>
+            <p><strong>Attendance Status:</strong> <span id="attendence">Present</span></p>
+            <p><strong>Attendance Percentage:</strong> 92%</p>
+        </div>
+
+        <div class="card">
+            <h3>Clubs and Extracurricular Activities</h3>
+            <p><strong>Chess Club:</strong> <span id="chess">Yes</span></p>
+            <p><strong>Science Club:</strong><span id="science">Yes</span> </p>
+            <p><strong>Student Club:</strong><span id="student">Yes</span> </p>
+            <p><strong>NCC Club:</strong><span id="ncc">Yes</span> </p>
+        </div>
+
+        <a href="#" class="button">Download Report</a>
+      
+
+
+        <div class="footer">
+            <p>Need help? <a href="#">Contact Us</a></p>
+            <a href="home.html"><button
+                    style="width:90px;height:3oopx;color:white;background-color: #48f713;border-radius: 3px;padding:10px;border:none">Logout</button></a>
+        </div>
+    </div>
+    <script>
+        let studentData = JSON.parse(localStorage.getItem("studentData"));
+        document.getElementById("studentName").innerHTML = studentData.name;
+        document.getElementById("studentId").innerHTML = studentData.studentid;
+        document.getElementById("cgpa").innerHTML = studentData.gpa;
+        let balance = document.getElementById("feeBalance").innerHTML;
+        balance = balance.replace("â¹", "₹");
+        document.getElementById("feeBalance").innerHTML = balance;
+        // document.getElementById("feeBalance").innerHTML=studentData.fees_balance;
+        document.getElementById("n_mark").innerHTML = studentData.metwork_mark;
+        document.getElementById("os_mark").innerHTML = studentData.os_mark;
+        document.getElementById("java_mark").innerHTML = studentData.java_mark;
+        document.getElementById("dsa_mark").innerHTML = studentData.dsa_mark;
+        document.getElementById("db_mark").innerHTML = studentData.db_mark;
+        document.getElementById("attendence").innerHTML = studentData.attendence;
+        document.getElementById("chess").innerHTML = studentData.chess_club;
+        document.getElementById("science").innerHTML = studentData.science_club;
+        document.getElementById("student").innerHTML = studentData.student_club;
+        document.getElementById("ncc").innerHTML = studentData.ncc_club;
+    </script>
+
+</body>
+
+</html>

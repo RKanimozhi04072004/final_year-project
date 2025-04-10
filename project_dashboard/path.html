@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Career Predictor</title>
+    <style>
+        /* Background Styling */
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to right, #4facfe, #00f2fe);
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Container */
+        .container {
+            width: 50%;
+            margin: 50px auto;
+            padding: 30px;
+            background: #fff;
+            border-radius: 15px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Heading */
+        h2 {
+            color: #333;
+            font-size: 26px;
+            margin-bottom: 20px;
+        }
+
+        /* Input Field */
+        input {
+            width: 80%;
+            padding: 12px;
+            font-size: 16px;
+            border: 2px solid #4facfe;
+            border-radius: 8px;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        input:focus {
+            border-color: #00c6ff;
+            box-shadow: 0px 0px 10px rgba(0, 198, 255, 0.5);
+        }
+
+        /* Button */
+        button {
+            width: 85%;
+            padding: 12px;
+            font-size: 18px;
+            font-weight: bold;
+            color: white;
+            background: #007BFF;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 15px;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        /* Result Display */
+        h3 {
+            color: #222;
+            margin-top: 20px;
+        }
+
+        p {
+            font-size: 18px;
+            color: #444;
+            padding: 10px;
+            background: #f1f1f1;
+            border-radius: 8px;
+            display: inline-block;
+            width: 80%;
+            margin-top: 5px;
+        }
+
+        /* Responsive Design */
+        @media screen and (max-width: 768px) {
+            .container {
+                width: 80%;
+            }
+            input, button {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Career Predictor</h2>
+    <input type="text" id="studentId" placeholder="Enter Student ID">
+    <button onclick="getCareerPath()">Predict Career</button>
+    
+    <h3>Career Recommendation:</h3>
+    <p id="careerResult">--</p>
+
+    <h3>Recommended Certifications:</h3>
+    <p id="certifications">--</p>
+
+    <h3>Internship Opportunities:</h3>
+    <p id="internships">--</p>
+</div>
+
+<script>
+function getCareerPath() {
+    const studentId = document.getElementById("studentId").value.trim();
+    if (!studentId) {
+        alert("Please enter a valid Student ID.");
+        return;
+    }
+
+    fetch(`db2.php?id=${studentId}`)
+        .then(response => response.json())
+        .then(data => {
+            console.log("API Response:", data);
+
+            if (!data.studentid) {
+                document.getElementById("careerResult").innerText = "No data found.";
+                document.getElementById("certifications").innerText = "--";
+                document.getElementById("internships").innerText = "--";
+                return;
+            }
+
+            let gpa = parseFloat(data.gpa) || 0;
+            let networkMark = parseInt(data.metwork_mark) || 0;
+            let osMark = parseInt(data.os_mark) || 0;
+            let javaMark = parseInt(data.java_mark) || 0;
+            let dsaMark = parseInt(data.dsa_mark) || 0;
+            let dbMark = parseInt(data.db_mark) || 0;
+
+            let career = "Explore new fields!";
+            if (gpa >= 8.5 || networkMark >= 80) career = "Network Engineer";
+            else if (gpa >= 8.0 || javaMark >= 80) career = "Software Developer";
+            else if (gpa >= 7.5 || dbMark >= 75) career = "Database Administrator";
+            else if (gpa >= 7.0 || dsaMark >= 70) career = "Data Analyst";
+            else if (gpa >= 6.5 || osMark >= 65) career = "System Administrator";
+
+            document.getElementById("careerResult").innerText = career;
+
+            let certifications = [];
+            if (networkMark >= 85) certifications.push("CCNA, Network+");
+            if (javaMark >= 80) certifications.push("Oracle Java SE, Full Stack Developer");
+            if (dbMark >= 75) certifications.push("SQL Certification, Database Management");
+            if (dsaMark >= 70) certifications.push("Data Science with Python, Machine Learning");
+            if (osMark >= 65) certifications.push("Linux Certification, RHCSA");
+
+            document.getElementById("certifications").innerText = 
+                certifications.length ? certifications.join(", ") : "Consider online courses.";
+
+            let internships = [];
+            if (data.chess_club === "yes") internships.push("AI Research Internship");
+            if (data.science_club === "yes") internships.push("Engineering Research Internship");
+            if (data.student_club === "yes") internships.push("Leadership & Management Internship");
+            if (data.ncc_club === "yes") internships.push("Defense & Security Internship");
+
+            document.getElementById("internships").innerText = 
+                internships.length ? internships.join(", ") : "Explore research projects or open-source contributions.";
+        })
+        .catch(error => {
+            console.error("Fetch error:", error);
+            alert("Failed to fetch data.");
+        });
+}
+</script>
+
+</body>
+</html>

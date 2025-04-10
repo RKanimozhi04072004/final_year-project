@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personalized Learning Resource Recommender</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #6e8efb, #a777e3);
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            width: 70%;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        input, button {
+            padding: 10px;
+            margin: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: none;
+        }
+        input {
+            width: 60%;
+            border: 1px solid #ccc;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .resource-list {
+            text-align: left;
+            margin-top: 20px;
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 10px;
+            max-height: 250px;
+            overflow-y: auto;
+        }
+        .resource-item {
+            margin: 10px 0;
+            padding: 10px;
+            background: #e3e3e3;
+            border-radius: 5px;
+        }
+        .loading {
+            font-size: 16px;
+            color: #555;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>📚 Personalized Learning Resource Recommender</h2>
+        <label for="studentId">Enter Student ID:</label>
+        <input type="text" id="studentId" placeholder="Enter ID">
+        <button onclick="getResources()">Get Recommendations</button>
+        
+        <h3>📌 Recommended Resources</h3>
+        <div id="resourceList" class="resource-list">
+            <p class="loading">Enter your Student ID and click "Get Recommendations" to see results.</p>
+        </div>
+        
+        <h3>📊 Subject Performance</h3>
+        <canvas id="subjectChart"></canvas>
+    </div>
+    
+    <script>
+        let chartInstance = null;
+
+        function getResources() {
+    const studentId = document.getElementById("studentId").value.trim();
+    if (!studentId) {
+        alert("Please enter a valid Student ID.");
+        return;
+    }
+
+    document.getElementById("resourceList").innerHTML = "<p class='loading'>🔄 Fetching recommendations...</p>";
+
+    fetch(`db_api.php?id=${studentId}`)
+        .then(response => response.json())
+        .then(data => {
+            console.log("API Response:", data); // Debugging
+
+            if (!data || !data.resources || !Array.isArray(data.resources) || data.resources.length === 0) {
+                document.getElementById("resourceList").innerHTML = "<p>No learning resources available.</p>";
+                return;
+            }
+
+            let resourceHTML = "";
+            data.resources.forEach(res => {
+                resourceHTML += `
+                    <div class='resource-item'>
+                        <strong>${res.subject}:</strong> 
+                        <a href='${res.link}' target='_blank'>${res.title}</a>
+                    </div>`;
+            });
+
+            document.getElementById("resourceList").innerHTML = resourceHTML || "<p>No specific resources found.</p>";
+
+            if (data.subjects && data.scores) {
+                loadChart(data.subjects, data.scores);
+            }
+        })
+        .catch(error => {
+            console.error("Error fetching data:", error);
+            document.getElementById("resourceList").innerHTML = "<p>⚠️ Failed to fetch data. Please try again.</p>";
+        });
+}
+
+        function loadChart(subjects, scores) {
+            const ctx = document.getElementById("subjectChart").getContext("2d");
+            if (chartInstance) {
+                chartInstance.destroy();
+            }
+            chartInstance = new Chart(ctx, {
+                type: "bar",
+                data: {
+                    labels: subjects,
+                    datasets: [{
+                        label: "Subject Performance",
+                        data: scores,
+                        backgroundColor: "#007bff",
+                        borderColor: "#0056b3",
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: { beginAtZero: true }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>

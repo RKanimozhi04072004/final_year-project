@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script> <!-- Font Awesome -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        body {
+            display: flex;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+
+      
+        .sidebar {
+            width: 220px;
+            background-color: #333;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            gap: 10px;
+            height: 100%;
+        }
+
+        .sidebar button, .sidebar a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px;
+            width: 100%;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .sidebar button:hover, .sidebar a:hover {
+            background-color: #555;
+            border-radius: 5px;
+        }
+
+      
+        .logout-btn {
+            margin-top: auto;
+            background-color: #e74c3c;
+            color: white;
+            font-size: 16px;
+            padding: 12px;
+            width: 100%;
+            border: none;
+            cursor: pointer;
+            text-align: center;
+            border-radius: 5px;
+        }
+
+        .logout-btn:hover {
+            background-color: #c0392b;
+        }
+
+     
+        .main-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            margin: 20px;
+        }
+
+        .main-content h2 {
+            margin-bottom: 15px;
+        }
+
+      
+        .right-sidebar {
+            width: 220px;
+            background-color: #eee;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            height: 100%;
+            border-left: 3px solid #ddd;
+        }
+
+        .notification {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .notification h3 {
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+
+        .notification p {
+            font-size: 14px;
+            color: #555;
+        }
+
+     
+        @media (max-width: 900px) {
+            body {
+                flex-direction: column;
+            }
+
+            .sidebar, .right-sidebar {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+  
+    <div class="sidebar">
+      
+        <a href="academics.html"><i class="fas fa-graduation-cap"></i> Academics</a>
+        <a href="marks.html"><i class="fas fa-book"></i> Marks</a>
+        <a href="club.html"><i class="fas fa-users"></i> Clubs</a>
+        <a href="personal.html"><i class="fas fa-user"></i> Personal Info</a>
+        <a href="profile.html"><i class="fas fa-chart-bar"></i> Student Profile</a>
+        <a href="home.html" style="margin-top:300px"><button class="logout-btn">Logout</button> </a>
+    </div>
+
+ 
+    <div class="main-content">
+        <h2>Welcome, Student!</h2>
+        <p>Select an option from the sidebar to view more details.</p>
+        <img style="width:850px;height:500px" src="https://images.unsplash.com/photo-1488190211105-8b0e65b80b4e?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="">
+    </div>
+
+ 
+    <div class="right-sidebar">
+        <div class="notification">
+            <h3>Upcoming Events</h3>
+            <p>Seminar on AI - March 15</p>
+        </div>
+        <div class="notification">
+            <h3>Latest Notices</h3>
+            <p>Mid-term exams start from April 2</p>
+        </div>
+    </div>
+
+</body>
+</html>

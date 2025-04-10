@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Data Visualization</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+        .chart-container {
+            width: 80%;
+            margin: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Student Enrollment Year Distribution (Line Chart)</h2>
+    <div class="chart-container">
+        <canvas id="enrollmentChart"></canvas>
+    </div>
+
+    <h2>Total Marks Over Time (Line Chart)</h2>
+    <div class="chart-container">
+        <canvas id="totalMarksChart"></canvas>
+    </div>
+
+    <h2>GPA Over Time (Line Chart)</h2>
+    <div class="chart-container">
+        <canvas id="gpaChart"></canvas>
+    </div>
+
+    <script>
+        // Fetch data from backend
+        fetch("db_api.php") // Change this to your actual PHP file
+            .then(response => response.json())
+            .then(data => {
+                const enrollmentCounts = {};
+                const years = [];
+                const totalMarksList = [];
+                const gpaList = [];
+
+                // Process data
+                data.forEach(student => {
+                    let year = student.enrollment;
+                    let totalMarks = parseFloat(student.total_marks);
+                    let gpa = parseFloat(student.gpa);
+
+                    // Count students per enrollment year
+                    enrollmentCounts[year] = (enrollmentCounts[year] || 0) + 1;
+
+                    // Collect Total Marks & GPA with respective years
+                    if (!years.includes(year)) {
+                        years.push(year);
+                        totalMarksList.push(totalMarks);
+                        gpaList.push(gpa);
+                    }
+                });
+
+                // Sort years
+                years.sort((a, b) => a - b);
+
+                // Extract labels and values for Enrollment Chart
+                const labels = Object.keys(enrollmentCounts).sort();
+                const values = labels.map(year => enrollmentCounts[year]);
+
+                // Render Enrollment Year Line Chart
+                new Chart(document.getElementById('enrollmentChart').getContext('2d'), {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Number of Students',
+                            data: values,
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                            borderWidth: 2,
+                            fill: true
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+
+                // Render Total Marks Line Chart
+                new Chart(document.getElementById('totalMarksChart').getContext('2d'), {
+                    type: 'line',
+                    data: {
+                        labels: years,
+                        datasets: [{
+                            label: 'Total Marks',
+                            data: totalMarksList,
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                            borderWidth: 2,
+                            fill: true
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Enrollment Year'
+                                }
+                            },
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: 'Total Marks'
+                                }
+                            }
+                        }
+                    }
+                });
+
+                // Render GPA Line Chart
+                new Chart(document.getElementById('gpaChart').getContext('2d'), {
+                    type: 'line',
+                    data: {
+                        labels: years,
+                        datasets: [{
+                            label: 'GPA',
+                            data: gpaList,
+                            borderColor: 'rgba(255, 99, 132, 1)',
+                            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                            borderWidth: 2,
+                            fill: true
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Enrollment Year'
+                                }
+                            },
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: 'GPA'
+                                }
+                            }
+                        }
+                    }
+                });
+
+            })
+            .catch(error => console.error('Error fetching data:', error));
+    </script>
+
+</body>
+</html>

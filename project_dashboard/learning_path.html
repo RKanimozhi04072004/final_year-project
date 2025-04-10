@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personalized Learning Path</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .container { max-width: 600px; margin: auto; }
+        .card { border: 1px solid #ccc; padding: 15px; margin: 10px 0; border-radius: 5px; }
+        .weak { color: red; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Personalized Learning Path</h2>
+        <div id="learning-path"></div>
+    </div>
+
+    <script>
+        const studentID = "12345"; // Change as per logged-in student
+        fetch(`learning_path.php?student_id=${studentID}`)
+            .then(response => response.json())
+            .then(data => {
+                let output = "<h3>Weak Subjects</h3>";
+                if (data.weak_subjects.length > 0) {
+                    output += "<ul>";
+                    data.weak_subjects.forEach(subject => {
+                        output += `<li class="weak">${subject.replace("_", " ").toUpperCase()}</li>`;
+                    });
+                    output += "</ul>";
+
+                    output += "<h3>Recommended Study Resources</h3>";
+                    data.resources.forEach(res => {
+                        output += `<div class="card">
+                            <strong>${res.subject.toUpperCase()}</strong> - ${res.resource_type}<br>
+                            <a href="${res.resource_link}" target="_blank">View Resource</a>
+                        </div>`;
+                    });
+                } else {
+                    output += "<p>You are performing well in all subjects!</p>";
+                }
+
+                document.getElementById("learning-path").innerHTML = output;
+            });
+    </script>
+</body>
+</html>

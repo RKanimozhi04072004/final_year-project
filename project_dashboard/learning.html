@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personalized Learning Recommender</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+        }
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        input, button {
+            padding: 10px;
+            margin: 10px;
+            width: 80%;
+            font-size: 16px;
+        }
+        .recommendations {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Learning Resource Recommender</h2>
+        <input type="text" id="name" placeholder="Enter Student Name">
+        <input type="text" id="id" placeholder="Enter Student ID">
+        <button onclick="fetchStudentData()">Get Recommendations</button>
+
+        <div class="student-info"></div>
+        <div class="recommendations"></div>
+    </div>
+
+    <script>
+        function fetchStudentData() {
+            const name = document.getElementById('name').value;
+            const id = document.getElementById('id').value;
+
+            if (!name || !id) {
+                alert("Please enter both name and student ID.");
+                return;
+            }
+
+            fetch('db_api.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: `name=${name}&id=${id}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message) {
+                    document.querySelector('.student-info').innerHTML = `<p>${data.message}</p>`;
+                } else {
+                    displayStudentInfo(data);
+                    recommendResources(data);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        function displayStudentInfo(data) {
+            document.querySelector('.student-info').innerHTML = `
+                <h3>Student Details</h3>
+                <p><strong>Name:</strong> ${data.name}</p>
+                <p><strong>GPA:</strong> ${data.gpa}</p>
+               
+            `;
+        }
+
+        function recommendResources(data) {
+            const weakSubjects = [];
+            if (data.NetworksMarks < 50) weakSubjects.push("Networks");
+            if (data.OperatingSystemMarks < 50) weakSubjects.push("Operating Systems");
+            if (data.JavaMarks < 50) weakSubjects.push("Java");
+            if (data.DataStructuresMarks < 50) weakSubjects.push("Data Structures");
+            if (data.DatabaseMarks < 50) weakSubjects.push("Database");
+
+            let resourcesHtml = `<h3>Recommended Resources</h3>`;
+            if (weakSubjects.length > 0) {
+                weakSubjects.forEach(subject => {
+                    resourcesHtml += `
+                        <p><strong>${subject}:</strong></p>
+                        <ul>
+                            <li><a href="#">📖 Notes for ${subject}</a></li>
+                            <li><a href="#">🎥 Video Lectures on ${subject}</a></li>
+                            <li><a href="#">📝 Practice Quizzes on ${subject}</a></li>
+                        </ul>
+                    `;
+                });
+            } else {
+                resourcesHtml += `<p>🎉 Great job! No weak subjects detected.</p>`;
+            }
+            document.querySelector('.recommendations').innerHTML = resourcesHtml;
+        }
+    </script>
+</body>
+</html>

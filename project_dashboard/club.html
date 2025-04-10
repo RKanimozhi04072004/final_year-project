@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Club Performance</title>
+    <script src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            flex-direction: column;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            width: 600px;
+            text-align: center;
+        }
+        h2 {
+            margin-bottom: 10px;
+        }
+        canvas {
+            width: 100% !important;
+            height: 300px !important;
+        }
+        #error-msg {
+            color: red;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+        .go-back-btn {
+            display: flex;
+            align-items: center;
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            color: black;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <button class="go-back-btn" onclick="window.location.href='student.html';">
+        <i class="fas fa-arrow-left"></i> Go Back
+    </button>
+    <div class="container">
+        <h2>Club Performance</h2>
+        <p id="studentName"></p>
+        <p id="studentId"></p> 
+        <canvas id="club-performance-chart"></canvas>
+        <p id="error-msg"></p> 
+    </div>
+   
+
+    <script>
+        
+        
+        const studentName = localStorage.getItem("studentName");
+        const studentId = localStorage.getItem("studentId");
+        const studentData = JSON.parse(localStorage.getItem("studentData"));
+
+        if (!studentName || !studentId || !studentData) {
+            alert("No student data found. Please log in first.");
+            window.location.href = "student.html";
+        } else {
+            document.getElementById("studentName").textContent = "Name: " + studentName;
+            document.getElementById("studentId").textContent = "Student ID: " + studentId;
+            generateClubPerformanceChart(studentData);
+        }
+
+        function generateClubPerformanceChart(student) {
+            console.log("student",student);
+            const ctx = document.getElementById("club-performance-chart").getContext("2d");
+
+           
+            const clubs = ["chess_club", "science_club", "student_club", "ncc_club"];
+
+          
+            const participation = clubs.map(club => {
+                let value = student[club] === "Yes" ? 1 : 0; 
+                return value;
+            });
+
+            if (participation.every(val => val === 0)) {
+                document.getElementById("error-msg").textContent = "Student is not part of any clubs.";
+                return;
+            }
+
+            new Chart(ctx, {
+                type: "bar", 
+                data: {
+                    labels: clubs,
+                    datasets: [{
+                        label: "Participation Level",
+                        data: participation,
+                        backgroundColor: ["#ff6384", "#36a2eb", "#ffce56", "#4bc0c0"],
+                        borderColor: ["#ff6384", "#36a2eb", "#ffce56", "#4bc0c0"],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    indexAxis: "y", 
+                    responsive: true,
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            grid: {
+                                display: true,
+                                color: "rgba(0, 0, 0, 0.1)"
+                            },
+                            ticks: {
+                                stepSize: 1 
+                            }
+                        },
+                        y: {
+                            grid: {
+                                display: false 
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: true, 
+                            position: "top"
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>

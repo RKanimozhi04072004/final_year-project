@@ -1,0 +1,358 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Marks</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            display: flex;
+            min-height: 100vh;
+            flex-direction: column;
+            background-color: #f7f9fc;
+        }
+
+        /* Navbar Styles */
+        nav {
+            background-color: #4e73df;
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            margin: 20px auto;
+            width: 90%;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        .main-content h2 {
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        /* Marks Table Styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #4e73df;
+            color: white;
+            font-weight: 600;
+        }
+
+        td {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover td {
+            background-color: #f1f1f1;
+        }
+
+        /* Footer Styles */
+        footer {
+            background-color: #4e73df;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            margin-top: auto;
+        }
+
+        footer p {
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .main-content {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="#">Student Dashboard</a>
+        <a href="student.html">Logout</a>
+    </nav>
+
+    <div class="main-content">
+        <h2>Student Marks and Performance</h2>
+
+       
+        <table>
+            <thead>
+                <tr>
+                    <th>Semester</th>
+                    <th>GPA</th>
+                    <th>Marks</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Semester 1</td>
+                    <td>8.2</td>
+                    <td>410 / 500</td>
+                </tr>
+                <tr>
+                    <td>Semester 2</td>
+                    <td>8.5</td>
+                    <td>425 / 500</td>
+                </tr>
+                <tr>
+                    <td>Semester 3</td>
+                    <td>8.8</td>
+                    <td>440 / 500</td>
+                </tr>
+                <tr>
+                    <td>Semester 4</td>
+                    <td>8.6</td>
+                    <td>430 / 500</td>
+                </tr>
+                <tr>
+                    <td>Semester 5</td>
+                    <td>8.9</td>
+                    <td>445 / 500</td>
+                </tr>
+                <tr>
+                    <td>Semester 6</td>
+                    <td>9.0</td>
+                    <td>450 / 500</td>
+                </tr>
+                <tr>
+                    <td>Semester 7</td>
+                    <td>8.7</td>
+                    <td>435 / 500</td>
+                </tr>
+                <tr>
+                    <td>Semester 8</td>
+                    <td>9.1</td>
+                    <td>455 / 500</td>
+                </tr>
+                <tr>
+                    <th>Total CGPA</th>
+                    <th colspan="2">8.72</th>
+                </tr>
+                <tr>
+                    <th>Status</th>
+                    <th colspan="2">Pass</th>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+    <footer>
+        <p>&copy; 2025 Student Portal. All Rights Reserved.</p>
+    </footer>
+
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parent Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: linear-gradient(135deg, #ff9a9e, #fad0c4, #fad0c4);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+        }
+
+        .container {
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+            max-width: 950px;
+            width: 100%;
+            padding: 50px 40px;
+            text-align: center;
+            transition: transform 0.4s ease;
+        }
+
+        .container:hover {
+            transform: scale(1.03);
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            color: #ff6f91;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px #ffe6eb;
+        }
+
+        .card {
+            background: linear-gradient(45deg, #42a5f5, #478ed1);
+            color: #fff;
+            padding: 30px;
+            margin: 25px 0;
+            border-radius: 18px;
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-7px);
+            box-shadow: 0 14px 28px rgba(0, 0, 0, 0.3);
+        }
+
+        .card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .card p {
+            font-size: 1.1rem;
+            margin: 15px 0;
+            line-height: 1.6;
+            color: #f1f1f1;
+        }
+
+        .mark-value {
+            display: inline-block;
+            background: #ffca28;
+            color: #333;
+            font-weight: bold;
+            padding: 8px 14px;
+            border-radius: 10px;
+            margin-left: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .logout-btn {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            background: #ff6f91;
+            color: #fff;
+            padding: 10px 18px;
+            border: none;
+            border-radius: 30px;
+            font-size: 0.95rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: background 0.3s ease, transform 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: #ff3b6e;
+            transform: scale(1.05);
+        }
+
+        .footer {
+            font-size: 0.95rem;
+            color: #999;
+            margin-top: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <a href="student.html"><button class="logout-btn">Logout</button></a>
+        <h1>🎓 Student Marks</h1>
+
+        <div class="card">
+            <h3>Academic Performance</h3>
+            <p><strong>Networks Marks:</strong><span class="mark-value" id="n_mark">--</span></p>
+            <p><strong>Operating System Marks:</strong><span class="mark-value" id="os_mark">--</span></p>
+            <p><strong>Java Marks:</strong><span class="mark-value" id="java_mark">--</span></p>
+            <p><strong>Data Structures Marks:</strong><span class="mark-value" id="dsa_mark">--</span></p>
+            <p><strong>Database Marks:</strong><span class="mark-value" id="db_mark">--</span></p>
+        </div>
+
+        <div class="footer">
+            &copy; 2025 Colorful University Dashboard 🌟
+        </div>
+    </div>
+
+    <script>
+       
+        const studentData = {
+            metwork_mark: 91,
+            os_mark: 89,
+            java_mark: 95,
+            dsa_mark: 88,
+            db_mark: 90
+        };
+
+        document.getElementById("n_mark").innerHTML = studentData.metwork_mark;
+        document.getElementById("os_mark").innerHTML = studentData.os_mark;
+        document.getElementById("java_mark").innerHTML = studentData.java_mark;
+        document.getElementById("dsa_mark").innerHTML = studentData.dsa_mark;
+        document.getElementById("db_mark").innerHTML = studentData.db_mark;
+    </script>
+
+</body>
+
+</html>
